@@ -1,3 +1,5 @@
+import { renderTable } from "./ui.js";
+
 export default class Blimmm {
     /**
      * @param {HTMLElement} element 
@@ -9,6 +11,8 @@ export default class Blimmm {
         this.blockTree = [];
 
         this.addBlock('paragraph');
+        this.addBlock('list');
+        this.addBlock('table');
 
         this.render()
     }
@@ -41,6 +45,10 @@ export default class Blimmm {
                     this.attachListeners(li);
                 });
                 this.holder.appendChild(list);
+            }
+
+            if (block.type === "table") {
+                this.holder.appendChild(renderTable(block, this.attachListeners.bind(this), this.render.bind(this)));
             }
         })
     }
@@ -86,6 +94,17 @@ export default class Blimmm {
                     'List item 2'
                 ]
             })
+        }
+
+        if (type === 'table') {
+            this.blockTree.push({
+                id: crypto.randomUUID(),
+                type,
+                data: [
+                    ['Name', 'Age'],
+                    ['Hirak', '25']
+                ]
+            });
         }
 
         this.render();
