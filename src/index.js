@@ -1,3 +1,4 @@
+import { parseSegments } from "./parser.js";
 import { renderTable } from "./ui.js";
 
 export default class Blimmm {
@@ -68,6 +69,13 @@ export default class Blimmm {
 
 
         el.addEventListener('input', (e) => {
+            const id = e.target.dataset.id;
+            const block = this.blockTree.find(b => b.id === id);
+            if (!block) return;
+
+            if (block.type === "paragraph") {
+                block.data = parseSegments(e.target);
+            }
 
         })
 
@@ -81,7 +89,7 @@ export default class Blimmm {
             this.blockTree.push({
                 id: crypto.randomUUID(),
                 type,
-                data: [{ text: 'New paragraph...' }]
+                data: [{ text: 'New paragraph...', styles: ['bold', 'italic', 'underline'] }]
             })
         }
 
